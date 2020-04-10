@@ -1,0 +1,45 @@
+
+header nav{
+	font-size: 1.3rem;
+}
+
+#container{
+	position: relative;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+	height: 30vh;
+	background-image: url("../img/dog.jpg");
+}
+
+#container.overlay{
+	position: absolute;
+	z-index: 2;
+	background-color: #000;
+	opacity: 0;
+}
+
+
+header, header a, header a:visited{
+	color:black;
+}
+
+h1, h2, h3, h4, h5, h6, nav, th {
+    font-family: Open Sans, Lucida Grande, Lucida Sans Unicode, Helvetica Neue, Arial, sans-serif;
+}
+
+main{
+	color: black;
+}
+
+a{
+	text-decoration:none;
+}
+
+#site-title{
+	padding-left: 10px;
+	
+}
+
+
+

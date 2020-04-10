@@ -1,0 +1,436 @@
+create database animal;
+use animal;
+
+Create table Organization(  
+name varchar(100) not null primary key,   
+street varchar(100),  
+city varchar(100),  
+postalcode char(6),  
+phone char(10));  
+
+Create table Animals(  
+id char(13) not null primary key,   
+type varchar(6),         #dog/cat/rabbit/rodent  
+current_location varchar(100),  
+startdate date not null,  
+picture varchar(300),  
+foreign key (current_location) references Organization (name) on delete set null); 
+
+
+Create table MoneyTransactions(  
+transaction_no char(13) not null primary key,  
+startingpoint varchar(40) not null,  
+destination varchar(40) not null,  
+transaction_type char(8),     #donation/adoption  
+amount decimal(12,2), 
+todaydate date);  
+
+
+Create table Vet(  
+fname varchar(50) not null,  
+lname varchar(50) not null,  
+primary key (fname,lname));  
+
+
+Create table Family(  
+lname varchar(50) not null primary key,  
+phone char(10),  
+street varchar(100),  
+city varchar(100),  
+postal_code char(6));  
+
+
+Create table SPCA(  
+name varchar(100) not null primary key,  
+foreign key (name) references Organization(name)); 
+
+
+Create table Rescuer(  
+name varchar(100) not null primary key,  
+foreign key (name) references Organization(name));  
+
+
+Create table Shelter(  
+name varchar(100) not null primary key,  
+website_URL varchar(100),  
+MaxNumOfDog integer not null,  
+MaxNumOfCat integer not null,  
+MaxNumOfRabbit integer not null,  
+MaxNumOfRodent integer not null,
+foreign key (name) references Organization(name));  
+
+
+Create table Employee(  
+fname varchar(50) not null,  
+lname varchar(50) not null,  
+work_location varchar(100) not null,  
+street varchar(100),  
+city varchar(100),  
+postalcode char(6),  
+phone char(10),  
+primary key (fname,lname),  
+foreign key (work_location) references Organization(name) on delete cascade);  
+
+
+
+Create table Driver(  
+fname varchar(50) not null,  
+lname varchar(50) not null,  
+license_no char(15), 
+license_plate char(6),  
+primary key (fname,lname),  
+foreign key (fname,lname) references Employee(fname,lname));  
+
+
+Create table Owner(  
+fname varchar(50) not null,  
+lname varchar(50) not null,  
+primary key (fname,lname), 
+foreign key (fname,lname) references Employee(fname,lname));   
+
+
+Create table Treats(  
+fname varchar(50) not null,  
+lname varchar(50) not null,  
+animal_id char(13) not null,  
+healthcondition varchar(40),  
+weight decimal(5,2),  
+date date,  
+primary key (animal_id, fname,lname),  
+foreign key (animal_id) references Animals (id) on delete cascade,  
+foreign key (fname, lname) references Vet (fname,lname));  
+
+
+
+Create table Transfer(  
+animal_id char(13) not null,  
+fname varchar(50) not null,  
+lname varchar(50) not null,  
+startingpoint varchar(40) not null,  
+destination varchar(40) not null,  
+date date,  
+primary key (animal_id,fname,lname),  
+foreign key (animal_id) references Animals (id),  
+foreign key (fname,lname) references Driver (fname,lname));  
+
+
+
+Create table Adopt(  
+animal_id char(13) not null,  
+lname varchar(50) not null,  
+transaction_no char(13) not null,
+primary key (animal_id),  
+foreign key (animal_id) references Animals (id),  
+foreign key (lname) references Family (lname),
+foreign key (transaction_no) references MoneyTransactions(transaction_no));  
+
+
+
+
+use animal;
+Insert into Organization values ('SPCA Kingston', '10 Bader Lane', 'Kingston', 'K7L2S7', '6137709999');   
+
+Insert into Organization values ('SPCA Vancouver', '505 Albert Street', 'Vancouver', 'V5H3Z7', '6047789999');    
+
+Insert into Organization values ('SPCA Toronto', '102 Alibaba St', 'Toronto', 'L1P1J2', '689294857');    
+
+Insert into Organization values ('SPCA Catnu', '982 Batey St', 'Toronto', 'L5J7k2', '6838273857');    
+
+ 
+
+ 
+
+Insert into Organization values ('SPCA Butterfly', '464 Frontenac St', 'Kingston', 'K7L3T4', '6134839293');   
+
+ 
+
+Insert into Organization values ('No Paw Left Behind', '630 Princess St', 'Kingston', 'K7L3G2', '6565647382');    
+
+ 
+
+Insert into Organization values ('No Cat Left Behind', '655 Princess St', 'Kingston', 'K7L1N8', '6135552837');    
+
+ 
+
+Insert into Organization values ('No Carrot Left Behind', '998 Handsome St', 'Ottawa', 'K1A3K2', '6134442222');    
+
+ 
+
+
+ 
+
+Insert into Organization values ('Save Me Cat Shelter', '888 Sky Avenue', 'Toronto', 'L1P7J6', '8291253839');   
+
+Insert into Organization values ('Save Me Dog Shelter', '374 Prince St', 'Kingston', '8T92K2', '8479192837');    
+
+Insert into Organization values ('Save Me Rabbit Shelter', '222 King Street', 'Montreal', '8E32M7', '6183092411');    
+
+Insert into Organization values ('Save Me Rodent Shelter', '555 Crying Street', 'Vancouver', 'V6O7G9', '6723298947');    
+
+Insert into SPCA values ('SPCA Kingston');    
+
+Insert into SPCA values ('SPCA Vancouver');    
+
+Insert into SPCA values ('SPCA Toronto');    
+
+Insert into SPCA values ('SPCA Catnu');    
+
+Insert into SPCA values ('SPCA Butterfly');    
+
+Insert into Rescuer values ('No Paw Left Behind');    
+
+Insert into Rescuer values ('No Cat Left Behind');    
+
+Insert into Rescuer values ('No Carrot Left Behind');    
+
+Insert into Shelter values ('Save Me Cat Shelter','www.jiujiucat.com','10','5','5','5');    
+
+Insert into Shelter values ('Save Me Dog Shelter','www.jiujiudog.com','10','5','5','5');    
+
+Insert into Shelter values ('Save Me Rabbit Shelter', 'www.jiujiurabbit.com','10','5','5','5');    
+
+Insert into Shelter values ('Save Me Rodent Shelter', 'www.jiujiurodent.com','10','5','5','5');    
+
+ 
+
+   
+
+ 
+
+Insert into Animals values ('0120170122012','Dog','SPCA Kingston','20170122','https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/single-minded-royalty-free-image-997141470-1558379890.jpg?crop=0.671xw:1.00xh;0.0847xw,0&resize=640:*') ;   
+
+Insert into Animals values ('0320181012012','Rabbit','SPCA Kingston','20181012', 'https://images2.minutemediacdn.com/image/upload/c_crop,h_1414,w_2102,x_0,y_0/v1554351612/shape/mentalfloss/557234-istock-480927021.jpg?itok=BhBBCMJr') ;   
+
+Insert into Animals values ('0220180318022', 'Cat', 'SPCA Vancouver', '20180318', 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/An_up-close_picture_of_a_curious_male_domestic_shorthair_tabby_cat.jpg/1920px-An_up-close_picture_of_a_curious_male_domestic_shorthair_tabby_cat.jpg');    
+
+Insert into Animals values ('0120180305001', 'Dog', 'SPCA Vancouver', '20180305','https://d17fnq9dkz9hgj.cloudfront.net/breed-uploads/2018/09/dog-landing-hero-lg.jpg?bust=1536935129&width=1080');    
+
+Insert into Animals values ('02201800502022', 'Cat', 'SPCA Toronto', '20180502', 'https://www.rd.com/wp-content/uploads/2019/04/shutterstock_1013848126.jpg');    
+
+Insert into Animals values ('0320180510004', 'Rabbit', 'SPCA Toronto', '20180510', 'https://i.insider.com/5bf43911110d4c1bb210b93c?width=1100&format=jpeg&auto=webp');    
+
+Insert into Animals values ('0320180611001', 'Rabbit', 'SPCA Catnu', '20180611','https://shawglobalnews.files.wordpress.com/2019/05/rabbit1.jpg?quality=70&strip=all&w=720');    
+
+Insert into Animals values ('0120180612002', 'Dog', 'SPCA Catnu', '20180612', 'https://d17fnq9dkz9hgj.cloudfront.net/breed-uploads/2018/08/alaskan-malamute-card-large.jpg?bust=1535569394');    
+
+Insert into Animals values ('0220180702010', 'Rabbit', 'SPCA Butterfly', '20180702','https://www.oxbowanimalhealth.com/uploads/files/Feb_2019_blog_rabbit_header.png');    
+
+Insert into Animals values ('0120180810002', 'Dog', 'SPCA Butterfly', '20180810','https://www.nationalgeographic.com/content/dam/animals/thumbs/rights-exempt/mammals/d/domestic-dog_thumb.jpg');    
+
+Insert into Animals values ('0120181231008', 'Dog', 'Save Me Dog Shelter', '20181231','https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/smart-dog-lead-1550144985.jpg?crop=1.00xw:0.753xh;0,0.186xh&resize=480:*');   
+
+Insert into Animals values ('0220170221003', 'Cat', 'Save Me Cat Shelter', '20170221','https://www.rd.com/wp-content/uploads/2019/05/American-shorthair-cat.jpg');   
+
+Insert into Animals values ('0320180928001', 'Rabbit', 'Save Me Rabbit Shelter', '20180928','https://i.insider.com/5bf43911110d4c1bb210b93c?width=1100&format=jpeg&auto=webp');    
+
+Insert into Animals values ('0120180725021', 'Dog', 'Save Me Dog Shelter', '20180725','https://ichef.bbci.co.uk/wwfeatures/live/976_549/images/live/p0/7z/n7/p07zn7p7.jpg'); 
+
+Insert into Animals values ('0420180325011','Rodent', 'No Carrot Left Behind', '20180325','https://www.ecolab.com/-/media/Ecolab/Ecolab-Home/Images/Programs/Pest/RodentsPestSolutions_edited1.jpg') ;   
+
+Insert into Animals values ('0220190123028','Cat', 'No Cat Left Behind', '20190123','https://www.rd.com/wp-content/uploads/2019/05/American-wirehair-cat.jpg') ;   
+
+Insert into Animals values ('0420180713009','Rodent', 'Save Me Rodent Shelter', '20180713','https://beta.ctvnews.ca/local/british-columbia/2019/12/10/1_4724831/_jcr_content/root/responsivegrid/image.coreimg.jpeg/1556330449753/1-4397778.jpeg') ;   
+
+Insert into Animals values ('0220180917002', 'Cat', 'Save Me Cat Shelter', '20180917','https://www.rd.com/wp-content/uploads/2019/05/shutterstock_1377050741.jpg') ;   
+
+Insert into Animals values ('0420171010098', 'Rodent', 'SPCA Catnu', '20170901','https://images.theconversation.com/files/180505/original/file-20170801-21062-ppzt0i.jpg?ixlib=rb-1.1.0&q=45&auto=format&w=926&fit=clip') ;   
+
+Insert into Animals values ('0120191227001', 'Dog', 'No Paw Left Behind', '20191227','https://i.guim.co.uk/img/media/fe1e34da640c5c56ed16f76ce6f994fa9343d09d/0_174_3408_2046/master/3408.jpg?width=700&quality=85&auto=format&fit=max&s=dfa532f0efa54ad2cda330f6d80f055c');    
+
+Insert into Animals values ('0220181006033', 'Cat', 'No Cat Left Behind', '20181006','https://vetstreet.brightspotcdn.com/dims4/default/8ab3754/2147483647/thumbnail/645x380/quality/90/?url=https%3A%2F%2Fvetstreet-brightspot.s3.amazonaws.com%2Ff7%2F3b%2Fa9263b9846c7a943e56b9c10f099%2FPersian-AP-0IUWP7-645sm3614.jpg') ;  
+
+Insert into Animals values ('0320181020007', 'Rabbit', 'SPCA Butterfly', '20181020','https://images2.minutemediacdn.com/image/upload/c_crop,h_1414,w_2102,x_0,y_0/v1554351612/shape/mentalfloss/557234-istock-480927021.jpg?itok=BhBBCMJr') ;  
+  
+
+ 
+
+Insert into Employee values ('Kevin', 'Miller', 'No Paw Left Behind', '672 Jarvis St', 'Kingston', 'K7L2K9', '6139895253');    
+
+Insert into Employee values ('Mike', 'Waston', 'No Carrot Left Behind', '728 Barrie Road', 'Ottawa', 'LO89W7', '3439276371');    
+
+Insert into Employee values ('Sherry', 'Kate', 'No Cat Left Behind', '222 Kingston Street', 'Kingston', 'K9L1K0', '6012039495');    
+
+ 
+
+Insert into Employee values ('Boss', 'Ma', 'Save Me Cat Shelter', '800 Princess Street', 'Toronto', 'H3A2M4', '6137229611');    
+
+Insert into Employee values ('Yun', 'Ma', 'Save Me Dog Shelter', '700 Princess Street', 'Toronto', 'H3B4L4', '6137419538');    
+
+Insert into Employee values ('Zong', 'Ma', 'Save Me Rabbit Shelter', '500 Princess Street', 'Toronto', 'H3K9M4', '6771224634');    
+
+Insert into Employee values ('Feifei', 'Ma', 'Save Me Rodent Shelter', '382 Princess Street', 'Toronto', 'O3D8K3', '6122930291');    
+
+Insert into Employee values ('Shawn', 'Mendes', 'SPCA Vancouver', '377 Notreal Street', 'Vancouver', 'F8L2J2', '6848586970');     
+
+Insert into Employee values ('Stauffer', 'Smith', 'SPCA Butterfly', '20 Union Street', 'Kingston', 'K7H4A6', '6137012933');    
+
+Insert into Employee values ('Ryan', 'Smith', 'SPCA Kingston', '19 Union Street', 'Kingston', 'K9O6A6', '6129294103');    
+
+Insert into Employee values ('Kate', 'Smith', 'SPCA Toronto', '30 Union Street', 'Kingston', 'K2E1K6', '6302849293');    
+
+Insert into Employee values ('Brian', 'Smith', 'SPCA Catnu', '10 Union Street', 'Kingston', 'K8I2B4', '6157274829');    
+
+
+
+
+Insert into Driver values ('Kevin', 'Miller','S19288829371873','7S019');    
+
+Insert into Driver values ('Mike', 'Waston','D12333782974922','2A4019') ;   
+
+Insert into Driver values ('Sherry', 'Kate','P24223391824823','ABC178') ;   
+
+ 
+
+   
+
+Insert into Transfer values ('0120181231008', 'Kevin', 'Miller', 'SPCA Toronto', 'Save Me Dog Shelter', '20180513');    
+
+Insert into Transfer values ('0120180810002', 'Kevin', 'Miller', 'SPCA Butterfly', 'No Paw Left Behind', '20180319');    
+
+Insert into Transfer values ('0120170122012', 'Mike', 'Waston', 'SPCA Kingston', 'Save me Rabbit Shelter', '20180928');    
+
+Insert into Transfer values ('0320181020007', 'Kevin', 'Miller', 'SPCA Toronto', 'Save Me Dog Shelter', '20190212');    
+
+Insert into Transfer values ('0420171010098', 'Mike', 'Waston', 'SPCA Catnu', 'No Cat Left Behind','20180911');    
+
+Insert into Transfer values ('0220181006033', 'Sherry', 'Kate', 'SPCA Butterfly', 'Save Me Rabbit Shelter', '20190420');    
+
+ 
+
+ 
+
+   
+
+   
+
+ 
+
+ 
+
+Insert into Vet Values ('Michael', 'Ma');    
+
+Insert into Vet Values ('Stanly', 'Miles');    
+
+Insert into Vet Values ('Jacky', 'Skillicorn');    
+
+Insert into Vet Values ('Simon', 'He');    
+
+Insert into Vet Values ('Zoey', 'Bennet');    
+
+ 
+
+ 
+
+   
+
+ 
+
+ 
+
+ 
+
+Insert into Treats Values ('Stanly', 'Miles', '0120191227001', 'Dental Disease', '12.52', '20191231');    
+
+Insert into Treats Values ('Michael', 'Ma', '0420180325011', 'Diabetes', '5.30', '20180911');    
+
+Insert into Treats Values ('Zoey', 'Bennet', '0320181020007', 'Flea Control', '3.22', '20171104');    
+
+Insert into Treats Values ('Simon', 'He', '0420171010098', 'Ear mites', '8.23', '20190809');    
+
+Insert into Treats Values ('Jacky', 'Skillicorn', '0220190123028', 'Arthritis', '7.11', '20180817');    
+
+ 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Insert into MoneyTransactions Values ('0220190928022', 'Davis', 'SPCA Toronto', 'Adoption', '1500','20180117');    
+
+Insert into MoneyTransactions Values ('0220190928021', 'Hellen', 'Save Me Rabbit Shelter', 'Adoption', '1200','20170822');    
+
+Insert into MoneyTransactions Values ('0220190203202', 'Johnson', 'SPCA Kingston', 'Donation', '1300','20190102');    
+
+Insert into MoneyTransactions Values ('0220190101001', 'Kevin', 'SPCA Catnu', 'Donation', '2000','20180521');   
+
+Insert into MoneyTransactions Values ('0220170901022', 'Smiths', 'SPCA Butterfly', 'Donation', '1200','20181007');    
+
+Insert into MoneyTransactions values ('0220180301007', 'Mitchell', 'SPCA Vancouver', 'Donation', '800','20190715');    
+
+Insert into MoneyTransactions values ('0120190305019', 'Huateng', 'No Guinea Pigs Left Behind', 'Donation', '50000','20190925');    
+
+Insert into MoneyTransactions values ('0120181001027', 'Yun', 'SPCA Vancouver', 'Donation', '100000','20180711');    
+
+
+Insert into MoneyTransactions values ('0220190820939', 'Ali', 'Save Me Dog Shelter', 'Donation', '100','20170922');      
+
+ 
+
+ 
+
+   
+
+ 
+
+ 
+
+   
+
+ 
+
+ 
+
+Insert into Family Values ('Davis', '6138492375', '484 Albert St', 'Kingston', 'K7L3N9');    
+
+Insert into Family Values ('Johnson', '6138452948', '37 Union St', 'Montreal', 'M3K7J8');    
+
+Insert into Family Values ('Kevin', '6039103920', '631 Princess St', 'Toronto', 'K8L2K1');    
+
+Insert into Family Values ('Hellen', '6949287463', '100 University St', 'Toronto', 'I9J2K2');    
+
+Insert into Family Values ('Mitchell', '6137113266', '355 Alfred Street', 'Montreal', 'M3N4J1');    
+
+Insert into Family Values ('Smiths', '6139972014', '17 Bader Lane', 'Kingston', 'K7L3M2');    
+
+ 
+
+ 
+
+Insert into Owner values ('Boss', 'Ma');    
+
+Insert into Owner values ('Shawn', 'Mendes');    
+
+Insert into Owner values ('Stauffer', 'Smith');    
+
+Insert into Owner values ('Yun', 'Ma'); 
+
+Insert into Owner values ('Zong', 'Ma'); 
+
+Insert into Owner values ('Feifei', 'Ma'); 
+
+Insert into Owner values ('Ryan', 'Smith'); 
+
+Insert into Owner values ('Kate', 'Smith'); 
+
+Insert into Owner values ('Brian', 'Smith'); 
+
+ 
+
+ 
+
+ 
+
+ 
+
+Insert into Adopt Values ('0420180713009', 'Davis', '0220190820939');    
+
+ 
+Insert into Adopt Values ('0420180325011', 'Hellen', '0220190928021');    
+
+ 
+
+ 
